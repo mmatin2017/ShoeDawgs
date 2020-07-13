@@ -1,0 +1,88 @@
+/*Navigation bar style*/
+.topnav {
+
+  background-color: white;
+  overflow: hidden;
+}
+
+.topnav a {
+  float: right;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  padding: 20px;
+}
+
+.topnav a:hover {
+  text-decoration: underline;
+}
+
+.topnav a.active {
+  text-decoration: underline;
+}
+.bxslider {
+  width: 100%;
+  margin: auto;
+}
+
+.bx-wrapper {
+    height: 350px !important;
+    margin: auto;
+}
+
+header {
+
+}
+body {
+  font-family: sans-serif;
+
+}
+/*style for pictures*/
+#Sbb {
+  padding-top: 20px;
+  width: 100%;
+  padding-bottom: 40px
+}
+#Js {
+  padding: inherit;
+  width: 100%;
+  margin: auto;
+}
+
+
+
+/*style for calendar pictures*/
+.left {
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+  width: 30%;
+
+
+
+}
+
+.right {
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+  width: 30%;
+
+}
+
+.center {
+  display: inline-block;
+  margin-right: auto;
+  margin-left: auto;
+  width: 30%;
+
+}
+/*style for article*/
+article{
+  padding-top: 300px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 75%;
+  font-size: 20px;
+}

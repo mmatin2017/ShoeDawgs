@@ -1,0 +1,218 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Sneaker Database API",
+    "version" : "1.0.0",
+    "title" : "The Sneaker Database",
+    "contact" : {
+      "email" : "contact@tg4.solutions"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "api.thesneakerdatabase.com",
+  "tags" : [ {
+    "name" : "sneakers",
+    "description" : "All sneaker data"
+  } ],
+  "schemes" : [ "https", "http" ],
+  "paths" : {
+    "/v1/sneakers" : {
+      "get" : {
+        "tags" : [ "sneakers" ],
+        "summary" : "Search for sneakers",
+        "description" : "Returns list of sneakers",
+        "operationId" : "getSneakers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of sneakers to return (min = 10 & max = 100)",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Pagination",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "styleId",
+          "in" : "query",
+          "description" : "Style ID of sneakers",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Name of sneakers",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "brand",
+          "in" : "query",
+          "description" : "Sneaker brand name",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "gender",
+          "in" : "query",
+          "description" : "Gender of sneakers",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "colorway",
+          "in" : "query",
+          "description" : "Colorway of sneakers",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "releaseDate",
+          "in" : "query",
+          "description" : "Release date of sneakers",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "releaseYear",
+          "in" : "query",
+          "description" : "Release year of sneakers",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of sneakers",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Sneaker"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid query parameter supplied"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "${get_lambda_arn}",
+          "passthroughBehavior" : "when_no_match",
+          "httpMethod" : "POST",
+          "type" : "aws_proxy"
+        }
+      }
+    },
+    "/v1/sneakers/{sneakerId}" : {
+      "get" : {
+        "tags" : [ "sneakers" ],
+        "summary" : "Find sneaker by ID",
+        "description" : "Returns a single sneaker",
+        "operationId" : "getSneakerById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "sneakerId",
+          "in" : "path",
+          "description" : "ID of sneaker to return",
+          "required" : true,
+          "type" : "string",
+          "format" : "uuid"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "A single sneaker",
+            "schema" : {
+              "$ref" : "#/definitions/Sneaker"
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Sneaker not found"
+          },
+          "500" : {
+            "description" : "Unexpected error"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "uri" : "${get_lambda_arn}",
+          "passthroughBehavior" : "when_no_match",
+          "httpMethod" : "POST",
+          "type" : "aws_proxy"
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Sneaker" : {
+      "type" : "object",
+      "required" : [ "brand", "colorway", "gender", "id", "media", "releaseDate", "retailPrice", "styleId", "title", "year" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "brand" : {
+          "type" : "string",
+          "example" : "Jordan"
+        },
+        "colorway" : {
+          "type" : "string",
+          "example" : "Black/Gym Red-Tour Yellow"
+        },
+        "gender" : {
+          "type" : "string",
+          "example" : "child"
+        },
+        "media" : {
+          "$ref" : "#/definitions/Sneaker_media"
+        },
+        "releaseDate" : {
+          "type" : "string",
+          "example" : "2018-06-09 23:59:59"
+        },
+        "retailPrice" : {
+          "type" : "integer",
+          "example" : 160
+        },
+        "styleId" : {
+          "type" : "string",
+          "example" : "AA1256-003"
+        },
+        "title" : {
+          "type" : "string",
+          "example" : "Jordan XXXII Low Last Shot"
+        },
+        "year" : {
+          "type" : "integer",
+          "example" : 2019
+        }
+      }
+    },
+    "Sneaker_media" : {
+      "type" : "object",
+      "properties" : {
+        "imageUrl" : {
+          "type" : "string",
+          "example" : "https://linktoimage.png"
+        },
+        "smallImageUrl" : {
+          "type" : "string",
+          "example" : "https://linktoimage.png"
+        },
+        "thumbUrl" : {
+          "type" : "string",
+          "example" : "https://linktoimage.png"
+        }
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "The Sneaker Database",
+    "url" : "http://thesneakerdatabase.com"
+  }
+}
